@@ -42,5 +42,3 @@ resource "random_string" "random" {
   special = false
   upper = false
 }
-
-#Test
