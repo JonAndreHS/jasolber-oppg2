@@ -25,16 +25,70 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "validate"
-  terraform:
-    name: 'Validate'
+  networking_validation:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    env: 
+      WORKING_DIR: ./modules/networking
       
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Terraform init
+        id: init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }} 
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt
+        working-directory: ${{ env.WORKING_DIR }} 
+
+      - name: Terraform validate
+        id: validate
+        run: terraform validate
+        working-directory: ${{ env.WORKING_DIR }}
+        
+  storage_validation:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env: 
+      WORKING_DIR: ./modules/storage
+      
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Terraform init
+        id: init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }} 
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt
+        working-directory: ${{ env.WORKING_DIR }} 
+
+      - name: Terraform validate
+        id: validate
+        run: terraform validate
+        working-directory: ${{ env.WORKING_DIR }}
+        
+  core_infrastructure_validation:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env: 
+      WORKING_DIR: ./core_infrastructure
+      
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
 
       # Runs a single command using the runners shell
       - name: Terraform init
