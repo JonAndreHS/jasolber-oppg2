@@ -29,5 +29,5 @@ variable "skuName" {
 variable "linuxWebAppName" {
   description = "The name of the Linux web app"
   type        = string
-  default     = "linux-web-app-default-name"
+  default     = "linux-web-app"
 }
