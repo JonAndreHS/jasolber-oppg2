@@ -1,6 +1,6 @@
 # This is a basic workflow to help validate your Terraform configuration
 
-name: Validate core infrastructure
+name: Validate application platform
 
 # Controls when the workflow will run
 on:
@@ -9,9 +9,9 @@ on:
     branches-ignore:
       - 'main'
     paths:
-      - 'modules/networking/**'
-      - 'modules/storage/**'
-      - 'core_infrastructure/**'
+      - 'modules/app_service/**'
+      - 'modules/database/**'
+      - 'application_platform/**'
 
   workflow_dispatch:
       
@@ -20,17 +20,16 @@ env:
   ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-  WORKING_DIR: ./core_infrastructure
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  networking_validation:
+  
+  app_service_validation:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env: 
-      WORKING_DIR: ./modules/networking
+      WORKING_DIR: ./modules/app_service
       
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -53,11 +52,11 @@ jobs:
         run: terraform validate
         working-directory: ${{ env.WORKING_DIR }}
         
-  storage_validation:
+  database_validation:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env: 
-      WORKING_DIR: ./modules/storage
+      WORKING_DIR: ./modules/database
       
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -80,11 +79,11 @@ jobs:
         run: terraform validate
         working-directory: ${{ env.WORKING_DIR }}
         
-  core_infrastructure_validation:
+  application_platform_validation:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env: 
-      WORKING_DIR: ./core_infrastructure
+      WORKING_DIR: ./application_platform
       
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
