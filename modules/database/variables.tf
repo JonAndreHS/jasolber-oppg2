@@ -1,13 +1,13 @@
 variable "mssqlServerName" {
   description = "The name of the SQL Server"
   type        = string
-  default     = "mssql-server-default-name"
+  default     = "mssql-server"
 }
 
 variable "mssqlDatabaseName" {
   description = "The name of the SQL Database"
   type        = string
-  default     = "mssql-database-default-name"
+  default     = "mssql-database"
 }
 
 variable "rgName" {
