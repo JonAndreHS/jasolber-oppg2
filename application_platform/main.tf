@@ -35,3 +35,4 @@ module "database" {
   rgName = azurerm_resource_group.rg.name
   location = azurerm_resource_group.rg.location
 }
+#Test
