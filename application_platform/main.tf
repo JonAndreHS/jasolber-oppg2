@@ -20,7 +20,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-    name     = var.rgName
+    name     = "${var.rgName}-${terraform.workspace}"
     location = var.location
 }
 
