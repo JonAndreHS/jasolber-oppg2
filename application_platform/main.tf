@@ -18,10 +18,14 @@ provider "azurerm" {
   subscription_id = "7c064ed9-c59f-4935-938b-f1a654d088a7"
   features {}
 }
-
+/*
 resource "azurerm_resource_group" "rg" {
   name     = "${var.rgName}-${terraform.workspace}"
   location = var.location
+}*/
+
+data "azurerm_resource_group" "rg" {
+  name = "${var.rgName}-${terraform.workspace}"
 }
 
 module "app_service" {
