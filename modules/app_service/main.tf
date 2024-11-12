@@ -17,7 +17,7 @@ resource "azurerm_service_plan" "service_plan" {
 }
 
 resource "azurerm_linux_web_app" "example" {
-  name                = "${var.linuxWebAppName}-${terraform.workspace}"
+  name                = "${var.linuxWebAppName}-ja-${terraform.workspace}"
   resource_group_name = var.rgName
   location            = var.location
   service_plan_id     = azurerm_service_plan.service_plan.id
