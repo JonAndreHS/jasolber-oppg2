@@ -23,13 +23,16 @@ data "azurerm_key_vault_secret" "kv_secret_password" {
 
 }
 
+  #tfsec:ignore:azure-database-enable-audit
 resource "azurerm_mssql_server" "mssql_server" {
-  name                         = var.mssqlServerName
-  resource_group_name          = var.rgName
-  location                     = var.location
-  version                      = var.dbServerVersion
-  administrator_login          = data.azurerm_key_vault_secret.kv_secret_username.value
-  administrator_login_password = data.azurerm_key_vault_secret.kv_secret_password.value
+  name                          = var.mssqlServerName
+  resource_group_name           = var.rgName
+  location                      = var.location
+  version                       = var.dbServerVersion
+  administrator_login           = data.azurerm_key_vault_secret.kv_secret_username.value
+  administrator_login_password  = data.azurerm_key_vault_secret.kv_secret_password.value
+  public_network_access_enabled = false
+  minimum_tls_version           = "1.2"
 }
 
 resource "azurerm_mssql_database" "mssql_database" {

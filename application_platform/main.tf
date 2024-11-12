@@ -1,17 +1,17 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
       version = "4.4.0"
     }
   }
 
   backend "azurerm" {
-    resource_group_name   = "rg-backend-tfstate-ja"
-    storage_account_name  = "sabetfsjaucgg232elq"
-    container_name        = "tfstate"
-    key                   = "application_platform.terraform.tfstate"
-  }  
+    resource_group_name  = "rg-backend-tfstate-ja"
+    storage_account_name = "sabetfsjaucgg232elq"
+    container_name       = "tfstate"
+    key                  = "application_platform.terraform.tfstate"
+  }
 }
 
 provider "azurerm" {
@@ -20,18 +20,19 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-    name     = var.rgName
-    location = var.location
+  name     = "${var.rgName}-${terraform.workspace}"
+  location = var.location
 }
 
 module "app_service" {
-  source = "../modules/app_service"
-  rgName = azurerm_resource_group.rg.name
+  source   = "../modules/app_service"
+  rgName   = azurerm_resource_group.rg.name
   location = azurerm_resource_group.rg.location
 }
 
 module "database" {
-  source = "../modules/database"
-  rgName = azurerm_resource_group.rg.name
+  source   = "../modules/database"
+  rgName   = azurerm_resource_group.rg.name
   location = azurerm_resource_group.rg.location
 }
+#Test
