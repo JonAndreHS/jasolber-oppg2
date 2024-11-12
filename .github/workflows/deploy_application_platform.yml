@@ -1,0 +1,95 @@
+name: Deploy application platform
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'modules/app_service/**'
+      - 'modules/database/**'
+      - 'application_platform/**'
+      
+  workflow_dispatch:
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  WORKING_DIR: ./application_platform
+
+jobs:
+
+  deploy_dev:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform workspace select or create dev
+        run: terraform workspace select -or-create dev
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform plan
+        run: terraform plan 
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
+
+  deploy_staging:
+    needs: deploy_dev
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Chekcout
+        uses: actions/checkout@v4
+
+      - name: Terraform init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform workspace select or create staging
+        run: terraform workspace select -or-create staging
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform plan
+        run: terraform plan
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
+
+  deploy_prod:
+    needs: deploy_staging
+    runs-on: ubuntu-latest
+    
+    environment:
+      name: prod
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform workspace select or create prod
+        run: terraform workspace select -or-create prod
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform plan
+        run: terraform plan
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
