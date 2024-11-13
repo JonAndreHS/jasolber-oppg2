@@ -26,13 +26,13 @@ resource "azurerm_resource_group" "rg" {
 
 module "app_service" {
   source   = "../modules/app_service"
-  rgName   = data.azurerm_resource_group.rg.name
-  location = data.azurerm_resource_group.rg.location
+  rgName   = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
 }
 
 module "database" {
   source   = "../modules/database"
-  rgName   = data.azurerm_resource_group.rg.name
-  location = data.azurerm_resource_group.rg.location
+  rgName   = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
 }
 #Test
