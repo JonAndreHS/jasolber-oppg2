@@ -1,7 +1,7 @@
 variable "rgName" {
   description = "Name of the resource group"
   type        = string
-  default     = "rg-ja-oblig2"
+  default     = "rg-ja-aplication-platform"
 }
 
 variable "location" {
