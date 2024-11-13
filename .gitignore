@@ -39,3 +39,5 @@ terraform.rc
 *.tfplan
 
 pictures/
+
+IAC-oblig2-structure.pdf
